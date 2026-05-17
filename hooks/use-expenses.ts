@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { loadExpenses, saveExpenses } from "@/lib/expense-storage";
+import { createExpense, fetchExpenses } from "@/lib/expenses-api";
 import type { ExpenseInsert, ExpenseRecord } from "@/lib/types";
 
 function sortExpenses(expenses: ExpenseRecord[]): ExpenseRecord[] {
@@ -12,34 +12,54 @@ function sortExpenses(expenses: ExpenseRecord[]): ExpenseRecord[] {
   });
 }
 
+function toErrorMessage(error: unknown, fallback: string): string {
+  if (error && typeof error === "object" && "message" in error) {
+    const message = (error as { message: unknown }).message;
+    if (typeof message === "string" && message.length > 0) return message;
+  }
+  return fallback;
+}
+
 export function useExpenses() {
   const [expenses, setExpenses] = useState<ExpenseRecord[]>([]);
   const [isReady, setIsReady] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setExpenses(sortExpenses(loadExpenses()));
-    setIsReady(true);
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const data = await fetchExpenses();
+        if (!cancelled) setExpenses(sortExpenses(data));
+      } catch (err) {
+        if (!cancelled) {
+          setError(toErrorMessage(err, "支出の読み込みに失敗しました"));
+        }
+      } finally {
+        if (!cancelled) setIsReady(true);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  useEffect(() => {
-    if (!isReady) return;
-    saveExpenses(expenses);
-  }, [expenses, isReady]);
-
-  const addExpense = useCallback((input: ExpenseInsert) => {
-    const record: ExpenseRecord = {
-      id: crypto.randomUUID(),
-      user_id: null,
-      amount: input.amount,
-      category_id: input.category_id,
-      date: input.date,
-      memo: input.memo,
-      created_at: new Date().toISOString(),
-    };
-    setExpenses((prev) => sortExpenses([record, ...prev]));
+  const addExpense = useCallback(async (input: ExpenseInsert) => {
+    setError(null);
+    try {
+      const record = await createExpense(input);
+      setExpenses((prev) => sortExpenses([record, ...prev]));
+    } catch (err) {
+      const message = toErrorMessage(err, "支出の追加に失敗しました");
+      setError(message);
+      throw new Error(message);
+    }
   }, []);
 
   const totalAmount = expenses.reduce((sum, e) => sum + e.amount, 0);
 
-  return { expenses, addExpense, isReady, totalAmount };
+  return { expenses, addExpense, isReady, totalAmount, error };
 }

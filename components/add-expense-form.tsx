@@ -6,19 +6,21 @@ import { todayIsoDate } from "@/lib/format";
 import type { ExpenseInsert } from "@/lib/types";
 
 type Props = {
-  onAdd: (input: ExpenseInsert) => void;
+  onAdd: (input: ExpenseInsert) => void | Promise<void>;
+  disabled?: boolean;
 };
 
 const inputClassName =
   "rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2.5 text-zinc-900 outline-none ring-emerald-500 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50";
 
-export function AddExpenseForm({ onAdd }: Props) {
+export function AddExpenseForm({ onAdd, disabled = false }: Props) {
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState(EXPENSE_CATEGORIES[0].id);
   const [date, setDate] = useState(todayIsoDate);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
 
@@ -40,15 +42,21 @@ export function AddExpenseForm({ onAdd }: Props) {
       return;
     }
 
-    onAdd({
-      amount: parsed,
-      category_id: categoryId,
-      date,
-      memo: null,
-    });
-
-    setAmount("");
-    setDate(todayIsoDate());
+    setIsSubmitting(true);
+    try {
+      await onAdd({
+        amount: parsed,
+        category_id: categoryId,
+        date,
+        memo: null,
+      });
+      setAmount("");
+      setDate(todayIsoDate());
+    } catch {
+      setError("保存に失敗しました。しばらくしてから再度お試しください。");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -114,9 +122,10 @@ export function AddExpenseForm({ onAdd }: Props) {
 
         <button
           type="submit"
-          className="mt-1 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 active:bg-emerald-800"
+          disabled={disabled || isSubmitting}
+          className="mt-1 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          追加する
+          {isSubmitting ? "保存中…" : "追加する"}
         </button>
       </div>
     </form>
