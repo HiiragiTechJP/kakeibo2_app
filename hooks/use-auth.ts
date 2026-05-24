@@ -26,7 +26,7 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
-  /** メールに6桁コードを送る（マジックリンクは使わない） */
+  /** メールに確認コードを送る（マジックリンクは使わない） */
   const sendEmailOtp = useCallback(async (email: string) => {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({

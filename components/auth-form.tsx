@@ -3,6 +3,8 @@
 import { FormEvent, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
+const OTP_LENGTH = 8;
+
 const inputClassName =
   "rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2.5 text-zinc-900 outline-none ring-emerald-500 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50";
 
@@ -54,8 +56,8 @@ export function AuthForm() {
     setError(null);
 
     const token = code.replace(/\D/g, "");
-    if (token.length < 6) {
-      setError("6桁の確認コードを入力してください");
+    if (token.length < OTP_LENGTH) {
+      setError(`${OTP_LENGTH}桁の確認コードを入力してください`);
       return;
     }
 
@@ -98,7 +100,7 @@ export function AuthForm() {
           <span className="font-medium text-zinc-900 dark:text-zinc-200">
             {email.trim()}
           </span>{" "}
-          に送った6桁のコードを入力してください。
+          に送った{OTP_LENGTH}桁のコードを入力してください。
         </p>
 
         <form onSubmit={handleVerifyCode} className="mt-5 flex flex-col gap-4">
@@ -110,8 +112,8 @@ export function AuthForm() {
               type="text"
               inputMode="numeric"
               autoComplete="one-time-code"
-              placeholder="123456"
-              maxLength={6}
+              placeholder="12345678"
+              maxLength={OTP_LENGTH}
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
               className={`${inputClassName} text-center text-lg tracking-[0.3em] tabular-nums`}
@@ -126,7 +128,7 @@ export function AuthForm() {
 
           <button
             type="submit"
-            disabled={isSubmitting || code.length < 6}
+            disabled={isSubmitting || code.length < OTP_LENGTH}
             className="rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "確認中…" : "ログインする"}
@@ -161,7 +163,7 @@ export function AuthForm() {
         ログイン
       </h2>
       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-        メールアドレスを入力すると、6桁の確認コードが届きます。パスワードは不要です。
+        メールアドレスを入力すると、{OTP_LENGTH}桁の確認コードが届きます。パスワードは不要です。
       </p>
 
       <form onSubmit={handleSendEmail} className="mt-5 flex flex-col gap-4">
