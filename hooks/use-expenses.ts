@@ -1,7 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { createExpense, fetchExpenses } from "@/lib/expenses-api";
+import {
+  createExpense,
+  deleteExpense,
+  fetchExpenses,
+} from "@/lib/expenses-api";
 import type { ExpenseInsert, ExpenseRecord } from "@/lib/types";
 
 function sortExpenses(expenses: ExpenseRecord[]): ExpenseRecord[] {
@@ -24,6 +28,7 @@ export function useExpenses() {
   const [expenses, setExpenses] = useState<ExpenseRecord[]>([]);
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -59,7 +64,30 @@ export function useExpenses() {
     }
   }, []);
 
+  const removeExpense = useCallback(async (id: string) => {
+    setError(null);
+    setDeletingId(id);
+    try {
+      await deleteExpense(id);
+      setExpenses((prev) => prev.filter((e) => e.id !== id));
+    } catch (err) {
+      const message = toErrorMessage(err, "支出の削除に失敗しました");
+      setError(message);
+      throw new Error(message);
+    } finally {
+      setDeletingId(null);
+    }
+  }, []);
+
   const totalAmount = expenses.reduce((sum, e) => sum + e.amount, 0);
 
-  return { expenses, addExpense, isReady, totalAmount, error };
+  return {
+    expenses,
+    addExpense,
+    removeExpense,
+    isReady,
+    totalAmount,
+    error,
+    deletingId,
+  };
 }

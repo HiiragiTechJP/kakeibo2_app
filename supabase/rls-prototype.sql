@@ -27,3 +27,10 @@ CREATE POLICY "prototype_insert_expenses"
   FOR INSERT
   TO anon, authenticated
   WITH CHECK (true);
+
+DROP POLICY IF EXISTS "prototype_delete_expenses" ON expenses;
+CREATE POLICY "prototype_delete_expenses"
+  ON expenses
+  FOR DELETE
+  TO anon, authenticated
+  USING (true);

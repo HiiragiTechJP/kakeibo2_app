@@ -8,9 +8,32 @@ type Props = {
   expenses: ExpenseRecord[];
   totalAmount: number;
   isReady: boolean;
+  onDelete: (id: string) => void | Promise<void>;
+  deletingId: string | null;
 };
 
-export function ExpenseList({ expenses, totalAmount, isReady }: Props) {
+export function ExpenseList({
+  expenses,
+  totalAmount,
+  isReady,
+  onDelete,
+  deletingId,
+}: Props) {
+  async function handleDelete(expense: ExpenseRecord) {
+    const category = getCategoryById(expense.category_id);
+    const label = category?.name ?? "未分類";
+    const confirmed = window.confirm(
+      `${label}（${formatYen(expense.amount)}）を削除しますか？`,
+    );
+    if (!confirmed) return;
+
+    try {
+      await onDelete(expense.id);
+    } catch {
+      // エラー表示は useExpenses の error で行う
+    }
+  }
+
   return (
     <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       <div className="mb-4 flex items-end justify-between gap-2">
@@ -48,9 +71,20 @@ export function ExpenseList({ expenses, totalAmount, isReady }: Props) {
                     {formatDateJa(expense.date)}
                   </p>
                 </div>
-                <p className="shrink-0 text-base font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
-                  {formatYen(expense.amount)}
-                </p>
+                <div className="flex shrink-0 items-center gap-2">
+                  <p className="text-base font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
+                    {formatYen(expense.amount)}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(expense)}
+                    disabled={deletingId === expense.id}
+                    aria-label={`${category?.name ?? "未分類"} ${formatYen(expense.amount)} を削除`}
+                    className="rounded-lg px-2 py-1 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-950"
+                  >
+                    {deletingId === expense.id ? "削除中…" : "削除"}
+                  </button>
+                </div>
               </li>
             );
           })}

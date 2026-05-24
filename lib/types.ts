@@ -1,4 +1,4 @@
-/** Supabase の expenses テーブルに合わせた型（プロトタイプは user_id は null） */
+/** Supabase の expenses テーブルに合わせた型（user_id は auth.users の ID） */
 export type ExpenseRecord = {
   id: string;
   user_id: string | null;

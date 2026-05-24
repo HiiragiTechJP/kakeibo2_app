@@ -6,7 +6,15 @@ import { useExpenses } from "@/hooks/use-expenses";
 import { formatYen } from "@/lib/format";
 
 export function KakeiboApp() {
-  const { expenses, addExpense, isReady, totalAmount, error } = useExpenses();
+  const {
+    expenses,
+    addExpense,
+    removeExpense,
+    isReady,
+    totalAmount,
+    error,
+    deletingId,
+  } = useExpenses();
 
   return (
     <main className="mx-auto flex w-full max-w-lg flex-col gap-6">
@@ -25,7 +33,7 @@ export function KakeiboApp() {
           {isReady ? formatYen(totalAmount) : "—"}
         </p>
         <p className="mt-2 text-sm text-emerald-100">
-          {expenses.length} 件の支出
+          {expenses.length} 件のデータ
         </p>
       </section>
 
@@ -34,6 +42,8 @@ export function KakeiboApp() {
         expenses={expenses}
         totalAmount={totalAmount}
         isReady={isReady}
+        onDelete={removeExpense}
+        deletingId={deletingId}
       />
     </main>
   );

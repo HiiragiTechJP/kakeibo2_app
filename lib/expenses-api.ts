@@ -1,6 +1,20 @@
 import { createClient } from "@/lib/supabase/client";
 import type { ExpenseInsert, ExpenseRecord } from "@/lib/types";
 
+async function getRequiredUserId(): Promise<string> {
+  const supabase = createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    throw new Error("ログインが必要です");
+  }
+
+  return user.id;
+}
+
 type ExpenseRow = {
   id: string;
   user_id: string | null;
@@ -37,10 +51,11 @@ export async function fetchExpenses(): Promise<ExpenseRecord[]> {
 
 export async function createExpense(input: ExpenseInsert): Promise<ExpenseRecord> {
   const supabase = createClient();
+  const userId = await getRequiredUserId();
   const { data, error } = await supabase
     .from("expenses")
     .insert({
-      user_id: null,
+      user_id: userId,
       amount: input.amount,
       category_id: input.category_id,
       date: input.date,
@@ -51,4 +66,11 @@ export async function createExpense(input: ExpenseInsert): Promise<ExpenseRecord
 
   if (error) throw error;
   return toExpenseRecord(data as ExpenseRow);
+}
+
+export async function deleteExpense(id: string): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase.from("expenses").delete().eq("id", id);
+
+  if (error) throw error;
 }
