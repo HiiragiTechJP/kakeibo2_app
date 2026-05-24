@@ -4,10 +4,6 @@ import type { Session, User } from "@supabase/supabase-js";
 import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-function getRedirectUrl(): string {
-  return `${window.location.origin}/auth/callback`;
-}
-
 export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,13 +26,25 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signInWithEmail = useCallback(async (email: string) => {
+  /** メールに6桁コードを送る（マジックリンクは使わない） */
+  const sendEmailOtp = useCallback(async (email: string) => {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: getRedirectUrl(),
+        shouldCreateUser: true,
       },
+    });
+    if (error) throw error;
+  }, []);
+
+  /** メールのコードでログイン */
+  const verifyEmailOtp = useCallback(async (email: string, token: string) => {
+    const supabase = createClient();
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: "email",
     });
     if (error) throw error;
   }, []);
@@ -49,5 +57,12 @@ export function useAuth() {
 
   const user: User | null = session?.user ?? null;
 
-  return { session, user, isLoading, signInWithEmail, signOut };
+  return {
+    session,
+    user,
+    isLoading,
+    sendEmailOtp,
+    verifyEmailOtp,
+    signOut,
+  };
 }
