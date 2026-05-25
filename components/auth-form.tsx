@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 const OTP_LENGTH = 8;
 
 const inputClassName =
-  "rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2.5 text-zinc-900 outline-none ring-emerald-500 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50";
+  "rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-slate-900 outline-none ring-sky-500 focus:ring-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50";
 
 function toAuthErrorMessage(error: unknown, fallback: string): string {
   if (error && typeof error === "object" && "message" in error) {
@@ -92,12 +92,12 @@ export function AuthForm() {
 
   if (step === "code") {
     return (
-      <section className="mx-auto w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+      <section className="mx-auto w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-md shadow-slate-200/70 dark:border-slate-800 dark:bg-slate-900 dark:shadow-slate-950/30">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
           確認コードを入力
         </h2>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          <span className="font-medium text-zinc-900 dark:text-zinc-200">
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+          <span className="font-medium text-slate-900 dark:text-slate-100">
             {email.trim()}
           </span>{" "}
           に送った{OTP_LENGTH}桁のコードを入力してください。
@@ -105,7 +105,7 @@ export function AuthForm() {
 
         <form onSubmit={handleVerifyCode} className="mt-5 flex flex-col gap-4">
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+            <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
               確認コード
             </span>
             <input
@@ -116,7 +116,7 @@ export function AuthForm() {
               maxLength={OTP_LENGTH}
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-              className={`${inputClassName} text-center text-lg tracking-[0.3em] tabular-nums`}
+            className={`${inputClassName} text-center text-lg tracking-[0.3em] tabular-nums`}
             />
           </label>
 
@@ -129,7 +129,7 @@ export function AuthForm() {
           <button
             type="submit"
             disabled={isSubmitting || code.length < OTP_LENGTH}
-            className="rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "確認中…" : "ログインする"}
           </button>
@@ -140,7 +140,7 @@ export function AuthForm() {
             type="button"
             onClick={handleResend}
             disabled={isSubmitting}
-            className="font-medium text-emerald-700 hover:text-emerald-800 disabled:opacity-50 dark:text-emerald-400"
+            className="font-medium text-sky-700 hover:text-sky-800 disabled:opacity-50 dark:text-sky-300"
           >
             コードを再送信
           </button>
@@ -148,7 +148,7 @@ export function AuthForm() {
             type="button"
             onClick={handleChangeEmail}
             disabled={isSubmitting}
-            className="text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+            className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
           >
             メールアドレスを変更
           </button>
@@ -158,17 +158,17 @@ export function AuthForm() {
   }
 
   return (
-    <section className="mx-auto w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-      <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+    <section className="mx-auto w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-md shadow-slate-200/70 dark:border-slate-800 dark:bg-slate-900 dark:shadow-slate-950/30">
+      <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
         ログイン
       </h2>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
         メールアドレスを入力すると、{OTP_LENGTH}桁の確認コードが届きます。パスワードは不要です。
       </p>
 
       <form onSubmit={handleSendEmail} className="mt-5 flex flex-col gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
             メールアドレス
           </span>
           <input
@@ -190,7 +190,7 @@ export function AuthForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isSubmitting ? "送信中…" : "確認コードを送る"}
         </button>

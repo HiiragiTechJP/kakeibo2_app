@@ -59,28 +59,28 @@ export function KakeiboApp() {
     <main className="mx-auto flex w-full max-w-lg flex-col gap-6">
       {error ? (
         <p
-          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200"
+          className="rounded-xl border border-red-200 bg-red-50/90 px-4 py-3 text-sm text-red-800 shadow-sm dark:border-red-900 dark:bg-red-950/80 dark:text-red-200"
           role="alert"
         >
           {error}
         </p>
       ) : null}
 
-      <section className="rounded-2xl bg-emerald-600 px-5 py-6 text-white shadow-md">
+      <section className="rounded-2xl bg-gradient-to-br from-sky-700 via-cyan-700 to-teal-600 px-5 py-6 text-white shadow-lg shadow-sky-200/70 dark:from-sky-800 dark:via-cyan-800 dark:to-teal-700 dark:shadow-slate-950/50">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-emerald-100">
+            <p className="text-sm font-medium text-white/80">
               {selectedMonthLabel}の支出合計
             </p>
             <p className="mt-1 text-3xl font-bold tabular-nums tracking-tight">
               {isReady ? formatYen(monthlyTotal) : "—"}
             </p>
-            <p className="mt-2 text-sm text-emerald-100">
+            <p className="mt-2 text-sm text-white/80">
               {monthlyExpenses.length} 件の支出
             </p>
           </div>
 
-          <div className="flex shrink-0 items-center gap-1 rounded-full bg-white/10 px-1 py-1">
+          <div className="flex shrink-0 items-center gap-1 rounded-full bg-white/10 px-1 py-1 backdrop-blur-sm">
             <button
               type="button"
               onClick={() => setSelectedMonth((prev) => shiftIsoMonth(prev, -1))}
@@ -104,12 +104,12 @@ export function KakeiboApp() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-xl bg-white/10 px-4 py-3">
+        <div className="mt-4 rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
           <p className="text-sm font-medium text-white">カテゴリ別</p>
           {!isReady ? (
-            <p className="mt-2 text-sm text-emerald-100">読み込み中…</p>
+            <p className="mt-2 text-sm text-white/80">読み込み中…</p>
           ) : categorySummary.length === 0 ? (
-            <p className="mt-2 text-sm text-emerald-100">
+            <p className="mt-2 text-sm text-white/80">
               {selectedMonthLabel}のカテゴリ別データはまだありません。
             </p>
           ) : (
@@ -119,7 +119,7 @@ export function KakeiboApp() {
                   key={category.id}
                   className="flex items-center justify-between gap-3 text-sm"
                 >
-                  <span className="text-emerald-50">{category.name}</span>
+                  <span className="text-white/90">{category.name}</span>
                   <span className="font-semibold tabular-nums text-white">
                     {formatYen(category.amount)}
                   </span>

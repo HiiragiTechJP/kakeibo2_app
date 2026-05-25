@@ -9,7 +9,9 @@ export function AppGate() {
 
   if (isLoading) {
     return (
-      <p className="py-16 text-center text-sm text-zinc-500">読み込み中…</p>
+      <p className="py-16 text-center text-sm text-sky-700 dark:text-sky-200">
+        読み込み中…
+      </p>
     );
   }
 

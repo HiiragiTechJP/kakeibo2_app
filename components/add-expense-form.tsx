@@ -12,7 +12,7 @@ type Props = {
 };
 
 const inputClassName =
-  "rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2.5 text-zinc-900 outline-none ring-emerald-500 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50";
+  "rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-slate-900 outline-none ring-sky-500 focus:ring-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50";
 
 export function AddExpenseForm({
   onAdd,
@@ -71,15 +71,15 @@ export function AddExpenseForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+      className="rounded-2xl border border-slate-200 bg-white p-5 shadow-md shadow-slate-200/70 dark:border-slate-800 dark:bg-slate-900 dark:shadow-slate-950/30"
     >
-      <h2 className="mb-4 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+      <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-slate-50">
         支出を追加
       </h2>
 
       <div className="flex flex-col gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
             金額（円）
           </span>
           <input
@@ -95,7 +95,7 @@ export function AddExpenseForm({
         </label>
 
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
             カテゴリ
           </span>
           <select
@@ -112,7 +112,7 @@ export function AddExpenseForm({
         </label>
 
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
             日付
           </span>
           <input
@@ -132,7 +132,7 @@ export function AddExpenseForm({
         <button
           type="submit"
           disabled={disabled || isSubmitting}
-          className="mt-1 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 active:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-1 rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sky-700 active:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isSubmitting ? "保存中…" : "追加する"}
         </button>

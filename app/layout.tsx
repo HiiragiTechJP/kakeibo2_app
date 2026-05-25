@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
 export const viewport: Viewport = {
-  themeColor: "#059669",
+  themeColor: "#0f766e",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -45,7 +45,7 @@ export default function RootLayout({
       lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-zinc-100 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+      <body className="flex min-h-full flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50">
         <SiteHeader />
         <main className="flex flex-1 flex-col">{children}</main>
       </body>
