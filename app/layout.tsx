@@ -21,17 +21,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "家計簿",
-  description: "シンプルな家計簿アプリ",
-  applicationName: "家計簿",
+  title: "スマート家計簿",
+  description: "毎日使いやすいスマート家計簿アプリ",
+  applicationName: "スマート家計簿",
   appleWebApp: {
     capable: true,
-    title: "家計簿",
+    title: "スマート家計簿",
     statusBarStyle: "default",
   },
   icons: {
-    icon: [{ url: "/icon", type: "image/png" }],
-    apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
+    icon: [{ url: "/icons/icon.png", type: "image/png", sizes: "577x577" }],
+    apple: [{ url: "/icons/icon.png", type: "image/png", sizes: "577x577" }],
   },
 };
 

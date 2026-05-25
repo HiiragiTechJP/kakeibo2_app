@@ -4,11 +4,14 @@ import { useMemo, useState } from "react";
 import { AddExpenseForm } from "@/components/add-expense-form";
 import { ExpenseList } from "@/components/expense-list";
 import { useExpenses } from "@/hooks/use-expenses";
-import { EXPENSE_CATEGORIES } from "@/lib/categories";
+import {
+  buildCategorySummary,
+  calculateExpenseTotal,
+  filterExpensesByMonth,
+} from "@/lib/expense-summary";
 import {
   formatMonthJa,
   formatYen,
-  isDateInMonth,
   shiftIsoMonth,
   todayIsoMonth,
 } from "@/lib/format";
@@ -26,31 +29,19 @@ export function KakeiboApp() {
   const [selectedMonth, setSelectedMonth] = useState(() => currentMonth);
 
   const monthlyExpenses = useMemo(
-    () => expenses.filter((expense) => isDateInMonth(expense.date, selectedMonth)),
+    () => filterExpensesByMonth(expenses, selectedMonth),
     [expenses, selectedMonth],
   );
 
   const monthlyTotal = useMemo(
-    () => monthlyExpenses.reduce((sum, expense) => sum + expense.amount, 0),
+    () => calculateExpenseTotal(monthlyExpenses),
     [monthlyExpenses],
   );
 
-  const categorySummary = useMemo(() => {
-    const totals = new Map<string, number>();
-
-    for (const expense of monthlyExpenses) {
-      totals.set(
-        expense.category_id,
-        (totals.get(expense.category_id) ?? 0) + expense.amount,
-      );
-    }
-
-    return EXPENSE_CATEGORIES.map((category) => ({
-      id: category.id,
-      name: category.name,
-      amount: totals.get(category.id) ?? 0,
-    })).filter((category) => category.amount > 0);
-  }, [monthlyExpenses]);
+  const categorySummary = useMemo(
+    () => buildCategorySummary(monthlyExpenses),
+    [monthlyExpenses],
+  );
 
   const selectedMonthLabel = formatMonthJa(selectedMonth);
   const isCurrentMonthSelected = selectedMonth === currentMonth;

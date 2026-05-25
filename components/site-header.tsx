@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -20,11 +21,17 @@ export function SiteHeader() {
     <header className="border-b border-slate-200/80 bg-white/85 px-4 py-4 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/80">
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-sky-500 to-teal-500 text-sm font-bold text-white shadow-sm shadow-sky-200 dark:shadow-slate-950/50">
-            家
+          <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg shadow-sm shadow-sky-200 dark:shadow-slate-950/50">
+            <Image
+              src="/icons/icon.png"
+              alt="スマート家計簿アイコン"
+              fill
+              sizes="32px"
+              className="object-cover"
+            />
           </span>
           <h1 className="truncate text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-50">
-            家計簿
+            スマート家計簿
           </h1>
         </div>
 
