@@ -7,6 +7,7 @@ import type { ExpenseRecord } from "@/lib/types";
 type Props = {
   expenses: ExpenseRecord[];
   totalAmount: number;
+  selectedMonthLabel: string;
   isReady: boolean;
   onDelete: (id: string) => void | Promise<void>;
   deletingId: string | null;
@@ -15,6 +16,7 @@ type Props = {
 export function ExpenseList({
   expenses,
   totalAmount,
+  selectedMonthLabel,
   isReady,
   onDelete,
   deletingId,
@@ -52,7 +54,7 @@ export function ExpenseList({
         <p className="py-8 text-center text-sm text-zinc-500">読み込み中…</p>
       ) : expenses.length === 0 ? (
         <p className="py-8 text-center text-sm text-zinc-500">
-          まだ支出がありません。上のフォームから追加してください。
+          {selectedMonthLabel}の支出はまだありません。上のフォームから追加してください。
         </p>
       ) : (
         <ul className="divide-y divide-zinc-100 dark:divide-zinc-800">

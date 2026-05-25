@@ -79,14 +79,11 @@ export function useExpenses() {
     }
   }, []);
 
-  const totalAmount = expenses.reduce((sum, e) => sum + e.amount, 0);
-
   return {
     expenses,
     addExpense,
     removeExpense,
     isReady,
-    totalAmount,
     error,
     deletingId,
   };

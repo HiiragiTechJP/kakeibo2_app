@@ -1,24 +1,33 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { EXPENSE_CATEGORIES } from "@/lib/categories";
-import { todayIsoDate } from "@/lib/format";
+import { getMonthDefaultDate } from "@/lib/format";
 import type { ExpenseInsert } from "@/lib/types";
 
 type Props = {
   onAdd: (input: ExpenseInsert) => void | Promise<void>;
+  selectedMonth: string;
   disabled?: boolean;
 };
 
 const inputClassName =
   "rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2.5 text-zinc-900 outline-none ring-emerald-500 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50";
 
-export function AddExpenseForm({ onAdd, disabled = false }: Props) {
+export function AddExpenseForm({
+  onAdd,
+  selectedMonth,
+  disabled = false,
+}: Props) {
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState(EXPENSE_CATEGORIES[0].id);
-  const [date, setDate] = useState(todayIsoDate);
+  const [date, setDate] = useState(() => getMonthDefaultDate(selectedMonth));
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setDate(getMonthDefaultDate(selectedMonth));
+  }, [selectedMonth]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -51,7 +60,7 @@ export function AddExpenseForm({ onAdd, disabled = false }: Props) {
         memo: null,
       });
       setAmount("");
-      setDate(todayIsoDate());
+      setDate(getMonthDefaultDate(selectedMonth));
     } catch {
       setError("保存に失敗しました。しばらくしてから再度お試しください。");
     } finally {

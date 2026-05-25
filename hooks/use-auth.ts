@@ -58,7 +58,6 @@ export function useAuth() {
   const user: User | null = session?.user ?? null;
 
   return {
-    session,
     user,
     isLoading,
     sendEmailOtp,
