@@ -35,6 +35,14 @@ CREATE POLICY "expenses_insert_own"
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "expenses_update_own" ON expenses;
+CREATE POLICY "expenses_update_own"
+  ON expenses
+  FOR UPDATE
+  TO authenticated
+  USING (auth.uid() = user_id OR user_id IS NULL)
+  WITH CHECK (auth.uid() = user_id);
+
 DROP POLICY IF EXISTS "expenses_delete_own" ON expenses;
 CREATE POLICY "expenses_delete_own"
   ON expenses

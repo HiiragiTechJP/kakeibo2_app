@@ -20,10 +20,12 @@ export function KakeiboApp() {
   const {
     expenses,
     addExpense,
+    editExpense,
     removeExpense,
     isReady,
     error,
     deletingId,
+    updatingId,
   } = useExpenses();
   const currentMonth = todayIsoMonth();
   const [selectedMonth, setSelectedMonth] = useState(() => currentMonth);
@@ -131,7 +133,9 @@ export function KakeiboApp() {
         totalAmount={monthlyTotal}
         selectedMonthLabel={selectedMonthLabel}
         isReady={isReady}
+        onEdit={editExpense}
         onDelete={removeExpense}
+        updatingId={updatingId}
         deletingId={deletingId}
       />
     </main>

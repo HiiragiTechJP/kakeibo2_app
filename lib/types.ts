@@ -20,3 +20,5 @@ export type ExpenseInsert = Pick<
   ExpenseRecord,
   "amount" | "category_id" | "date" | "memo"
 >;
+
+export type ExpenseUpdate = ExpenseInsert;

@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import type { ExpenseInsert, ExpenseRecord } from "@/lib/types";
+import type { ExpenseInsert, ExpenseRecord, ExpenseUpdate } from "@/lib/types";
 
 async function getRequiredUserId(): Promise<string> {
   const supabase = createClient();
@@ -65,6 +65,34 @@ export async function createExpense(input: ExpenseInsert): Promise<ExpenseRecord
     .single();
 
   if (error) throw error;
+  return toExpenseRecord(data as ExpenseRow);
+}
+
+export async function updateExpense(
+  id: string,
+  input: ExpenseUpdate,
+): Promise<ExpenseRecord> {
+  const supabase = createClient();
+  const userId = await getRequiredUserId();
+  const { data, error } = await supabase
+    .from("expenses")
+    .update({
+      user_id: userId,
+      amount: input.amount,
+      category_id: input.category_id,
+      date: input.date,
+      memo: input.memo,
+    })
+    .eq("id", id)
+    .select()
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) {
+    throw new Error(
+      "更新対象のデータが見つかりません。RLSポリシーまたはuser_idを確認してください。",
+    );
+  }
   return toExpenseRecord(data as ExpenseRow);
 }
 

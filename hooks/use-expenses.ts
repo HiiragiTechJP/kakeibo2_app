@@ -5,8 +5,13 @@ import {
   createExpense,
   deleteExpense,
   fetchExpenses,
+  updateExpense,
 } from "@/lib/expenses-api";
-import type { ExpenseInsert, ExpenseRecord } from "@/lib/types";
+import type {
+  ExpenseInsert,
+  ExpenseRecord,
+  ExpenseUpdate,
+} from "@/lib/types";
 
 function sortExpenses(expenses: ExpenseRecord[]): ExpenseRecord[] {
   return [...expenses].sort((a, b) => {
@@ -29,6 +34,7 @@ export function useExpenses() {
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -64,6 +70,27 @@ export function useExpenses() {
     }
   }, []);
 
+  const editExpense = useCallback(async (id: string, input: ExpenseUpdate) => {
+    setError(null);
+    setUpdatingId(id);
+    try {
+      const record = await updateExpense(id, input);
+      setExpenses((prev) =>
+        sortExpenses(prev.map((e) => (e.id === id ? record : e))),
+      );
+    } catch (err) {
+      const raw = toErrorMessage(err, "支出の更新に失敗しました");
+      const message = raw.includes("Cannot coerce") ||
+        raw.includes("更新対象のデータが見つかりません")
+        ? "支出を更新できませんでした。権限設定を確認してください。"
+        : raw;
+      setError(message);
+      throw new Error(message);
+    } finally {
+      setUpdatingId(null);
+    }
+  }, []);
+
   const removeExpense = useCallback(async (id: string) => {
     setError(null);
     setDeletingId(id);
@@ -82,9 +109,11 @@ export function useExpenses() {
   return {
     expenses,
     addExpense,
+    editExpense,
     removeExpense,
     isReady,
     error,
     deletingId,
+    updatingId,
   };
 }
