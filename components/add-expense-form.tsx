@@ -22,6 +22,7 @@ export function AddExpenseForm({
   const [amount, setAmount] = useState("");
   const [categoryId, setCategoryId] = useState(EXPENSE_CATEGORIES[0].id);
   const [date, setDate] = useState(() => getMonthDefaultDate(selectedMonth));
+  const [memo, setMemo] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -51,15 +52,18 @@ export function AddExpenseForm({
       return;
     }
 
+    const trimmedMemo = memo.trim();
+
     setIsSubmitting(true);
     try {
       await onAdd({
         amount: parsed,
         category_id: categoryId,
         date,
-        memo: null,
+        memo: trimmedMemo.length > 0 ? trimmedMemo : null,
       });
       setAmount("");
+      setMemo("");
       setDate(getMonthDefaultDate(selectedMonth));
     } catch {
       setError("保存に失敗しました。しばらくしてから再度お試しください。");
@@ -119,6 +123,20 @@ export function AddExpenseForm({
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
+            className={inputClassName}
+          />
+        </label>
+
+        <label className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+            メモ（任意）
+          </span>
+          <input
+            type="text"
+            maxLength={80}
+            placeholder="例: ランチ、スーパー、電車代"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
             className={inputClassName}
           />
         </label>

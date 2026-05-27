@@ -74,6 +74,11 @@ export function ExpenseList({
                   <p className="text-sm text-slate-500 dark:text-slate-400">
                     {formatDateJa(expense.date)}
                   </p>
+                  {expense.memo ? (
+                    <p className="mt-1 truncate text-sm text-slate-600 dark:text-slate-300">
+                      {expense.memo}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   <p className="text-base font-semibold tabular-nums text-slate-900 dark:text-slate-50">
