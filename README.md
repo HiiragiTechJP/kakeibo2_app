@@ -17,6 +17,16 @@
 - Supabase (Auth / PostgreSQL)
 - Vercel
 
+## URL 構成
+
+| URL | 内容 |
+|-----|------|
+| `/` | ランディングページ（LP） |
+| `/app` | 家計簿アプリ本体 |
+| `/privacy` | プライバシーポリシー |
+| `/terms` | 利用規約 |
+| `/contact` | お問い合わせ |
+
 ## セットアップ
 
 ```bash

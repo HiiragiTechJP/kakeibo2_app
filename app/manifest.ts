@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "ポケット家計簿",
     short_name: "ポケット家計簿",
     description: "スマホでかんたんに使えるポケット家計簿アプリ",
-    start_url: "/",
+    start_url: "/app",
     display: "standalone",
     background_color: "#e0f2fe",
     theme_color: "#38bdf8",
