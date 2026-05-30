@@ -24,14 +24,14 @@ export function SiteHeader() {
           <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg shadow-sm shadow-sky-200 dark:shadow-slate-950/50">
             <Image
               src="/icons/icon.png"
-              alt="スマート家計簿アイコン"
+              alt="ポケット家計簿アイコン"
               fill
               sizes="32px"
               className="object-cover"
             />
           </span>
           <h1 className="truncate text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-50">
-            スマート家計簿
+            ポケット家計簿
           </h1>
         </div>
 

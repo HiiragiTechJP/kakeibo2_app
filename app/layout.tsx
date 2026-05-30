@@ -21,12 +21,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "スマート家計簿",
-  description: "毎日使いやすいスマート家計簿アプリ",
-  applicationName: "スマート家計簿",
+  title: "ポケット家計簿",
+  description: "スマホでかんたんに使えるポケット家計簿アプリ",
+  applicationName: "ポケット家計簿",
   appleWebApp: {
     capable: true,
-    title: "スマート家計簿",
+    title: "ポケット家計簿",
     statusBarStyle: "default",
   },
   icons: {

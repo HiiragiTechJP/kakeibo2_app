@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "スマート家計簿",
-    short_name: "スマート家計簿",
-    description: "毎日使いやすいスマート家計簿アプリ",
+    name: "ポケット家計簿",
+    short_name: "ポケット家計簿",
+    description: "スマホでかんたんに使えるポケット家計簿アプリ",
     start_url: "/",
     display: "standalone",
     background_color: "#e0f2fe",
