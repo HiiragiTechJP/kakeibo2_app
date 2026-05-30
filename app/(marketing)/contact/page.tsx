@@ -12,10 +12,7 @@ export default function ContactPage() {
         ポケット家計簿に関する不具合報告・ご意見は、以下のメールアドレスまでご連絡ください。
       </p>
       <p>
-        <a href="mailto:contact@example.com">contact@example.com</a>
-      </p>
-      <p className="text-xs text-slate-500 dark:text-slate-400">
-        ※ 公開前に運営者の連絡先メールアドレスへ差し替えてください。
+        <a href="mailto:pocketkakeibo@gmail.com">pocketkakeibo@gmail.com</a>
       </p>
     </LegalPage>
   );
