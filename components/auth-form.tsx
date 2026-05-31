@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
-const OTP_LENGTH = 8;
+const OTP_LENGTH = 6;
 
 const inputClassName =
   "rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-slate-900 outline-none ring-sky-500 focus:ring-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50";
@@ -112,7 +112,7 @@ export function AuthForm() {
               type="text"
               inputMode="numeric"
               autoComplete="one-time-code"
-              placeholder="12345678"
+              placeholder="123456"
               maxLength={OTP_LENGTH}
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
